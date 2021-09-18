@@ -1,2 +1,2 @@
 # DecisionTree
-run python dt.py
+-run python dt.py

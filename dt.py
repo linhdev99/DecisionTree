@@ -2,6 +2,9 @@ import pandas
 import math
 from functools import reduce
 
+ROUND_NUM = 3
+NODE_NAME = 'A'
+
 
 class Field:
     saveField = []
@@ -32,13 +35,13 @@ class Field:
     def setDataInit(self):
         Field.dataInit = self
         self.calEntropyInit()
-        print("\n\n\n\n\nGoi 'A' la tap du lieu huan luyen ban dau voi '" +
+        print("\n\n\n\n\nGoi '"+NODE_NAME+"' la tap du lieu huan luyen ban dau voi '" +
               str(self.getLengthTable()) + "' phan tu")
         print("Bao gom:", [(name + ": " + str(Field.dataInit.attr[name]))
               for name in Field.dataInit.attr])
-        print("tinh tung gia tri cua phan tu (value) trong H(A) theo cong thuc sau roi cong lai")
+        print("tinh tung gia tri cua phan tu (value) trong H('"+NODE_NAME+"') theo cong thuc sau roi cong lai")
         print("value = - gtpt/tongpt * log2(gtpt/tongpt)")
-        print("\nH(EntropyInit) = H(A) = ", Field.entropyInit)
+        print("\nH(EntropyInit) = H('"+NODE_NAME+"') = ", Field.entropyInit)
         print("\n\n\n\n")
 
     def calEntropyInit(self):
@@ -47,7 +50,7 @@ class Field:
         total = reduce(lambda x, y: x+data.attr[y], data.attr, 0) * 1.0
         for name in data.attr:
             res += (-data.attr[name]/total)*math.log2(data.attr[name]/total)
-        Field.entropyInit = round(res, 3)
+        Field.entropyInit = round(res, ROUND_NUM)
 
     def calculateEntropy(self):
         datamap = list(
@@ -75,7 +78,7 @@ class Field:
                     ps = data_json[subAttr][subInitAttr] / \
                         data_json[subAttr]['_tong_'] * 1.0
                     res += 0 if ps == 0 else (-ps)*math.log2(ps)
-            self.nodeEntropy[subAttr] = round(res, 3)
+            self.nodeEntropy[subAttr] = round(res, ROUND_NUM)
         self.jsonData = data_json
 
     def calInformationGain(self):
@@ -84,7 +87,7 @@ class Field:
             lambda y, x: y+-self.nodeEntropy[x]*self.attr[x]/self.getLengthTable(), self.attr, 0.0)
         # value += ((-self.nodeEntropy[x]*self.attr[x]/self.getLengthTable()) for x in self.attr)
         res = Field.entropyInit + value
-        self.infGain = round(res, 3)
+        self.infGain = round(res, ROUND_NUM)
         # print("H(", self.name, ") = ", self.infGain)
 
     @classmethod
@@ -99,7 +102,7 @@ class Field:
             print("\n-----\n")
             print(x.jsonData)
             print(
-                "\nXet thuoc tinh: '"+str(x.name)+"'\nNeu chia node 'A' dua tren '"+str(x.name)+"' theo cong thuc tren thi ta co:\n")
+                "\nXet thuoc tinh: '"+str(x.name)+"'\nNeu chia node '"+NODE_NAME+"' dua tren '"+str(x.name)+"' theo cong thuc tren thi ta co:\n")
             print([("H(" + str(x.name) + "=" + str(value) + ") = " + str(x.nodeEntropy[value]))
                   for value in x.nodeEntropy])
             print("H(", x.name, ") = ", x.infGain)
