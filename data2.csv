@@ -1,0 +1,11 @@
+﻿eduLVL,career,exp,salary
+thpt,manager,<3,low
+thpt,manager,3_10,low
+dh,manager,<3,high
+dh,service,>10,low
+thpt,service,3_10,low
+dh,service,3_10,high
+dh,manager,>10,high
+dh,service,<3,low
+thpt,manager,>10,high
+thpt,service,>10,low
